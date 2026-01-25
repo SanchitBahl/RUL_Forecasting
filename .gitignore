@@ -1,13 +1,10 @@
 # Python
 __pycache__/
 *.pyc
-.env
-venv/
 env/
 
 # Data
 data/processed/
-models/
 
 # Notebooks
 .ipynb_checkpoints/
