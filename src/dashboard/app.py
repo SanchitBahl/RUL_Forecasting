@@ -19,7 +19,7 @@ uploaded_file = st.file_uploader(
     type=["txt"]
 )
 
-API_URL = "http://127.0.0.1:8000/predict"
+API_URL = "https://rul-forecasting.onrender.com/predict"
 
 if uploaded_file is not None:
     # Preview uploaded file
