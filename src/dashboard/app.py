@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
+import time
 
 st.set_page_config(page_title="Engine RUL Predictor", layout="centered")
 
@@ -19,7 +20,42 @@ uploaded_file = st.file_uploader(
     type=["txt"]
 )
 
-API_URL = "https://rul-forecasting.onrender.com/predict"
+API_URL = "https://rul-forecasting.onrender.com"
+
+def check_api_status():
+    """Attempts to contact the API and returns True if active."""
+    try:
+        # We set a short timeout for the check, 
+        # but Render's cold start happens at the networking layer.
+        response = requests.get(f"{API_URL}/health", timeout=5)
+        if response.status_code == 200:
+            return True
+    except:
+        return False
+    return False
+
+# --- API WAKE-UP LOGIC ---
+if "api_online" not in st.session_state:
+    st.session_state.api_online = False
+
+status_container = st.empty()
+
+if not st.session_state.api_online:
+    with status_container.container():
+        st.warning("⚠️ API Server is sleeping (Free Tier).")
+        if st.button("Wake Up Server"):
+            with st.status("Waking up the engine... This usually takes 1-2 minutes.", expanded=True) as status:
+                # Loop until the API responds
+                max_retries = 30 
+                for i in range(max_retries):
+                    if check_api_status():
+                        st.session_state.api_online = True
+                        status.update(label="✅ Server Ready!", state="complete", expanded=False)
+                        break
+                    time.sleep(5) # Wait 5 seconds between pings
+                else:
+                    status.update(label="❌ Server timed out. Please refresh.", state="error")
+
 
 if uploaded_file is not None:
     # Preview uploaded file
@@ -44,7 +80,7 @@ if uploaded_file is not None:
             try:
                 file_bytes = uploaded_file.getvalue()
                 response = requests.post(
-                    API_URL,
+                    f"{API_URL}/predict",
                     files={"file": (uploaded_file.name, file_bytes, "text/plain")}
 
                 )

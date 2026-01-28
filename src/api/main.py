@@ -24,10 +24,12 @@ SCALER_PATH = "models/scaler.pkl"
 model = joblib.load(MODEL_PATH)
 scaler = joblib.load(SCALER_PATH)
 
-# ------------------------------
+# Status check endpoint
+@app.get("/status")
+async def status():
+    return {"status": "API is running"}
+
 # Prediction endpoint
-# ------------------------------
-#
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
