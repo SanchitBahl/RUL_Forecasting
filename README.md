@@ -17,7 +17,7 @@ Unlike standard monolithic ML scripts, this project is built as a distributed sy
 
 
 
-* **Frontend (Streamlit):** A user-friendly interface for data ingestion and result visualization.
+* **Frontend (Streamlit):** A user-friendly interface for data ingestion and result presentation.
 * **Backend (FastAPI):** A robust REST API that serves the trained model, handles preprocessing, and returns batch inferences.
 * **Model:** A Random Forest Regressor optimized via Grid Search.
 
@@ -66,15 +66,3 @@ The final model was selected after comparing several algorithms on the **NASA C-
 1.  **Check API Status:** Use the **"Wake Server"** button on the dashboard. Wait for the status to turn green (**✅ Server Ready**).
 2.  **Upload Data:** Upload the engine sensor data (currently optimized for the `.txt` format).
 3.  **View Results:** The model will process the operational settings and 21 sensor readings to provide the predicted RUL for each unit.
-
----
-
-## 📂 Repository Structure
-
-```plaintext
-├── api/                # FastAPI backend source code
-├── streamlit_app/      # Streamlit frontend source code
-├── notebooks/          # EDA and Model Comparison (LR, SVR, RF, etc.)
-├── models/             # Serialized Random Forest model (.pkl)
-└── requirements.txt    # Project dependencies
-```
