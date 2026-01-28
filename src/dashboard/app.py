@@ -27,7 +27,7 @@ def check_api_status():
     try:
         # We set a short timeout for the check, 
         # but Render's cold start happens at the networking layer.
-        response = requests.get(f"{API_URL}/health", timeout=5)
+        response = requests.get(f"{API_URL}/status", timeout=5)
         if response.status_code == 200:
             return True
     except:
